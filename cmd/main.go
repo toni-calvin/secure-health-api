@@ -11,7 +11,7 @@ import (
 func main() {
 	db.Connect()
 
-	if err := db.DB.AutoMigrate(&models.User{}, &models.Diagnosis{}); err != nil {
+	if err := db.DB.AutoMigrate(&models.Patient{}, &models.Diagnosis{}); err != nil {
 		log.Fatalf("Failed to run migrations: %v", err)
 	}
 	log.Println("Migrations applied successfully.")

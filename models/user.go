@@ -2,9 +2,13 @@ package models
 
 import "time"
 
-type User struct {
+type Patient struct {
 	ID        string    `gorm:"type:uuid;default:gen_random_uuid();primaryKey"`
-	Email     string    `gorm:"type:varchar(255);uniqueIndex;not null"`
+	Username  string    `gorm:"type:varchar(255);uniqueIndex;not null"`
+	Nif       string    `gorm:"type:varchar(255);uniqueIndex;not null"`
+	Email     string    `gorm:"type:varchar(255);not null"`
+	Phone     string    `gorm:"type:varchar(255);"`
+	Address   string    `gorm:"type:varchar(255);"`
 	Password  string    `gorm:"type:varchar(255);not null"`
 	CreatedAt time.Time `gorm:"default:current_timestamp"`
 }
