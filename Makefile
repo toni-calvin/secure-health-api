@@ -3,24 +3,27 @@ PROJECT_NAME := topdoctors-challenge
 APP_NAME := $(PROJECT_NAME)-app
 TAG := latest
 DOCKER_IMAGE := $(APP_NAME):$(TAG)
-DOCKERFILE := Dockerfile
 PORT := 8080
-VOLUME_NAME := $(PROJECT_NAME)_postgres_data
 
 # Default target: build and run
 all: build run
 
-# Build the Docker image without cache
+# Build the Docker image using docker-compose
 build:
-	@echo "Building Docker image..."
-	docker build --no-cache -t $(DOCKER_IMAGE) -f $(DOCKERFILE) .
+	@echo "Building Docker images with docker-compose..."
+	docker-compose build
 
-# Run the Docker container interactively
+# Run the application using docker-compose
 run:
-	@echo "Running Docker container interactively..."
-	docker run -it --rm -p $(PORT):$(PORT) $(DOCKER_IMAGE)
+	@echo "Starting the application using docker-compose..."
+	docker-compose up
 
-# Clean up only project-related resources
+# Stop the application without removing volumes
+stop:
+	@echo "Stopping all containers..."
+	docker-compose stop
+
+# Clean up all project resources, including volumes
 clean:
 	@echo "Stopping and removing all containers, networks, and volumes for the project..."
 	docker-compose down --volumes --remove-orphans
@@ -28,5 +31,5 @@ clean:
 	-docker rmi $(DOCKER_IMAGE) || true
 	@echo "Cleanup completed successfully."
 
-# Full rebuild: clean, build, and run
+# Full rebuild: clean and run using docker-compose
 rebuild: clean build run

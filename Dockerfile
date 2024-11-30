@@ -1,13 +1,13 @@
-# Use a base image with Go
-FROM golang:1.20-alpine
+# Use Go base image
+FROM golang:1.23.3-alpine
 
 # Set the working directory
 WORKDIR /app
 
-# Copy all project files to the container
+# Copy the project files
 COPY . .
 
-# Change directory to /app/cmd to build the Go application
+# Navigate to the cmd directory to build the Go binary
 WORKDIR /app/cmd
 
 # Build the Go binary and place it in /app
@@ -19,8 +19,8 @@ WORKDIR /app
 # Ensure the binary is executable
 RUN chmod +x /app/main
 
-# Expose the port the application will listen on
+# Expose the application port
 EXPOSE 8080
 
-# Run the application
+# Run the binary
 CMD ["./main"]

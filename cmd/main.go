@@ -1,16 +1,28 @@
 package main
 
 import (
-    "fmt"
-    "log"
-    "net/http"
+	"fmt"
+	"log"
+	"net/http"
+	"topdoctors/db"
+	"topdoctors/models"
 )
 
 func main() {
-    http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-        fmt.Fprintf(w, "Hello from Dockerized Go! I an finally working")
-    })
+	db.Connect()
 
-    log.Println("Server running on port 8080...")
-    log.Fatal(http.ListenAndServe(":8080", nil))
+	if err := db.DB.AutoMigrate(&models.Patient{}, &models.Diagnosis{}); err != nil {
+		log.Fatalf("Failed to run migrations: %v", err)
+	}
+	log.Println("Migrations applied successfully.")
+
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintf(w, "Hello, TopDoctors Challenge!")
+	})
+	log.Println("Server is running on port 8080...")
+	err := http.ListenAndServe(":8080", nil)
+	if err != nil {
+		log.Fatalf("Failed to start server: %v", err)
+	}
+
 }
