@@ -16,7 +16,7 @@ Before running the project, ensure you have the following installed:
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/your-username/topdoctors-challenge.git
+git clone https://github.com/toni-calvin/topdoctors-challenge.git
 cd topdoctors-challenge
 ```
 
