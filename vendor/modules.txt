@@ -1,2 +1,0 @@
-# github.com/lib/pq v1.10.6
-## explicit
