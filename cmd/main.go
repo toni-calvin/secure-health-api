@@ -3,7 +3,6 @@ package main
 import (
 	"log"
 	"net/http"
-	"topdoctors/api"
 	"topdoctors/db"
 	"topdoctors/models"
 )
@@ -18,7 +17,6 @@ func main() {
 
 	db.SeedAdminUser()
 
-	r := api.SetupRoutes()
 	log.Println("Server running on port 8080")
 	log.Fatal(http.ListenAndServe(":8080", r))
 
