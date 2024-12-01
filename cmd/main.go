@@ -1,9 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
+	"topdoctors/api"
 	"topdoctors/db"
 	"topdoctors/models"
 )
@@ -16,13 +16,10 @@ func main() {
 	}
 	log.Println("Migrations applied successfully.")
 
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Hello, TopDoctors Challenge!")
-	})
-	log.Println("Server is running on port 8080...")
-	err := http.ListenAndServe(":8080", nil)
-	if err != nil {
-		log.Fatalf("Failed to start server: %v", err)
-	}
+	db.SeedAdminUser()
+
+	r := api.SetupRoutes()
+	log.Println("Server running on port 8080")
+	log.Fatal(http.ListenAndServe(":8080", r))
 
 }
