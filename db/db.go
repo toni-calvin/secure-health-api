@@ -19,7 +19,7 @@ func SeedAdminUser() {
 	adminPassword := os.Getenv("ADMIN_PASSWORD")
 
 	if adminUsername == "" || adminPassword == "" {
-		log.Fatalf("Admin credentials not set in environment variables. Please define ADMIN_USERNAME, ADMIN_PASSWORD, and ADMIN_ROLE in the .env file")
+		log.Fatalf("Admin credentials not set in environment variables. Please define [ADMIN_USERNAME, ADMIN_PASSWORD] in the .env file")
 	}
 
 	// Check if any users exist in the database
