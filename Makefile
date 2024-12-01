@@ -1,3 +1,5 @@
+.PHONY: all build run stop clean rebuild db
+
 # Variables
 PROJECT_NAME := topdoctors-challenge
 APP_NAME := $(PROJECT_NAME)-app
@@ -33,3 +35,7 @@ clean:
 
 # Full rebuild: clean and run using docker-compose
 rebuild: clean build run
+
+database:
+	@echo "Starting the database using docker-compose..."
+	docker-compose exec db psql -U postgres -d topdoctors
