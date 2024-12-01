@@ -27,6 +27,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// check if user exists in database
 	var user models.User
 	if err := db.DB.Where("username = ?", req.Username).First(&user).Error; err != nil {
 		http.Error(w, "Invalid username or password", http.StatusUnauthorized)
