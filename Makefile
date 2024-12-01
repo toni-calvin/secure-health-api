@@ -1,4 +1,4 @@
-.PHONY: all build run stop clean rebuild db
+.PHONY: all build run stop clean rebuild database
 
 # Variables
 PROJECT_NAME := topdoctors-challenge
