@@ -11,6 +11,8 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+var jwtSecret = []byte("secret")
+
 type LoginRequest struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
