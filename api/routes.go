@@ -24,7 +24,7 @@ func SetupRoutes() *mux.Router {
 	// External API
 	external := r.PathPrefix("/external").Subrouter()
 	external.Use(auth.AuthMiddleware("external"))
-	external.HandleFunc("/users", users.InternalCreateUserHandler).Methods("POST")
+	external.HandleFunc("/users", users.ExternalCreateUserHandler).Methods("POST")
 
 	// external.HandleFunc("/diagnoses", diagnoses.GetDiagnoses).Methods("GET")
 	// external.HandleFunc("/diagnoses", diagnoses.CreateDiagnosis).Methods("POST")
