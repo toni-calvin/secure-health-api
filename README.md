@@ -59,12 +59,17 @@ app-1  | <timestamp> Server running on port 8080
 The application will now be running on http://localhost:8080 and is ready to accept requests.
 
 ## Running the Scenario Script (in another shell)
-### 1. Install Python Requirements
+### 1. Create and activate the Virtual Environment 
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+### 2. Install required dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. Run the Scenario Script
+### 3. Run the Scenario Script
 ```bash
 pip install -r requirements.txt
 ```
