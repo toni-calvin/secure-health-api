@@ -24,21 +24,26 @@ run:
 tests:
 	@echo "Running tests..."
 	docker-compose up -d test_db
-	docker-compose run --rm app go test -v ./...
+	@docker-compose exec test_db sh -c 'until pg_isready -U postgres; do sleep 1; done;'
+	docker-compose run --rm test
 	docker-compose down
 
-# Stop the application without removing volumes
+
+
 stop:
 	@echo "Stopping all containers..."
 	docker-compose stop
 
-# Clean up all project resources, including volumes
 clean:
 	@echo "Stopping and removing all containers, networks, and volumes for the project..."
 	docker-compose down --volumes --remove-orphans
 	@echo "Removing the application image..."
 	-docker rmi $(DOCKER_IMAGE) || true
+	@echo "Pruning unused Docker volumes and images..."
+	docker volume prune -f
+	docker image prune -f
 	@echo "Cleanup completed successfully."
+
 
 # Full rebuild: clean and run using docker-compose
 rebuild: clean build run
