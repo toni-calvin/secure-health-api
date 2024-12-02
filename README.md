@@ -88,5 +88,8 @@ This behavior is intentional to demonstrate the handling of unique constraints a
 ## Running Test (in another shell)
 
 ## Additional Notes 
-- To rebuild the applicatin you can run ```bash make rebuild ```
+- To rebuild the applicatin you can run
+```bash
+make rebuild
+```
 
