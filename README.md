@@ -20,7 +20,7 @@ Before you start, ensure you have the following installed:
 Begin by cloning the repository to your local machine:
 
 ```bash
-git clone https://github.com/toni-calvin/topdoctors-challenge.git
+git clone git@github.com:toni-calvin/topdoctors-challenge.git
 cd topdoctors-challenge
 ```
 
