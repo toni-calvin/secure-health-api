@@ -21,7 +21,7 @@ run:
 	docker-compose up app db
 
 # Run tests
-tests:
+test:
 	@echo "Running tests..."
 	docker-compose up -d test_db
 	@docker-compose exec test_db sh -c 'until pg_isready -U postgres; do sleep 1; done;'

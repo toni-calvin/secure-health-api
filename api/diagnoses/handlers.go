@@ -2,7 +2,6 @@ package diagnoses
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"time"
 	"topdoctors/models"
@@ -54,7 +53,6 @@ func (h *DiagnosesHandler) CreateDiagnosis(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	fmt.Println(req)
 	if req.PatientID == "" || req.Diagnosis == "" {
 		http.Error(w, "Missing required fields", http.StatusBadRequest)
 		return
