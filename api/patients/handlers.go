@@ -56,9 +56,8 @@ func ListPatientsHandler(w http.ResponseWriter, r *http.Request) {
 	var patients []models.Patient
 	query := db.DB
 
-	// Apply name filter if provided
 	if nameFilter != "" {
-		query = query.Where("LOWER(name) LIKE ?", "%"+strings.ToLower(nameFilter)+"%")
+		query = query.Where("LOWER(name) = ?", strings.ToLower(nameFilter))
 	}
 
 	if err := query.Find(&patients).Error; err != nil {
