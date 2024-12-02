@@ -1,8 +1,14 @@
 import datetime
+import os
 import requests
 from termcolor import colored
+from dotenv import load_dotenv
+
+load_dotenv()
 
 BASE_URL = "http://localhost:8080"
+ADMIN_USERNAME = os.getenv("ADMIN_USERNAME")
+ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD")
 
 def print_boxed_message(message, color="blue"):
     line_length = len(message) + 4
@@ -105,13 +111,13 @@ def list_diagnoses(role, token, filters=None):
 
 # Admin Operations
 def admin_operations():
-    print_boxed_message("Admin Operations", color="blue")
-    admin_token = login("admin", "notsecurepassword")
+    print_boxed_message("Admin Operations", color="magenta")
+    admin_token = login(ADMIN_USERNAME, ADMIN_PASSWORD)
     return admin_token
 
 # Internal Operations
 def internal_operations(admin_token):
-    print_boxed_message("Internal Operations", color="blue")
+    print_boxed_message("Internal Operations", color="magenta")
     today = datetime.date.today().isoformat()
     tomorrow = (datetime.date.today() + datetime.timedelta(days=1)).isoformat()
     
@@ -134,7 +140,7 @@ def internal_operations(admin_token):
 
 # External Operations
 def external_operations(internal_token):
-    print_boxed_message("External Operations", color="blue")
+    print_boxed_message("External Operations", color="magenta")
     today = datetime.date.today().isoformat()
     tomorrow = (datetime.date.today() + datetime.timedelta(days=1)).isoformat()
 
