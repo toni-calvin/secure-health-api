@@ -5,9 +5,18 @@ import (
 	"fmt"
 	"net/http"
 	"time"
-	"topdoctors/db"
 	"topdoctors/models"
+
+	"gorm.io/gorm"
 )
+
+type DiagnosesHandler struct {
+	DB *gorm.DB
+}
+
+func NewDiagnosesHandler(db *gorm.DB) *DiagnosesHandler {
+	return &DiagnosesHandler{DB: db}
+}
 
 type CreateDiagnosisRequest struct {
 	PatientID    string `json:"patient_id"`
@@ -16,12 +25,12 @@ type CreateDiagnosisRequest struct {
 	StartDate    string `json:"start_date"`
 }
 
-func GetDiagnoses(w http.ResponseWriter, r *http.Request) {
+func (h *DiagnosesHandler) GetDiagnoses(w http.ResponseWriter, r *http.Request) {
 	name := r.URL.Query().Get("name")
 	startDate := r.URL.Query().Get("start_date")
 
 	var diagnoses []models.Diagnosis
-	query := db.DB.Table("diagnoses").Joins("INNER JOIN patients ON patients.id = diagnoses.patient_id")
+	query := h.DB.Table("diagnoses").Joins("INNER JOIN patients ON patients.id = diagnoses.patient_id")
 
 	if name != "" {
 		query = query.Where("patients.name ILIKE ?", "%"+name+"%")
@@ -38,7 +47,7 @@ func GetDiagnoses(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(diagnoses)
 }
 
-func CreateDiagnosis(w http.ResponseWriter, r *http.Request) {
+func (h *DiagnosesHandler) CreateDiagnosis(w http.ResponseWriter, r *http.Request) {
 	var req CreateDiagnosisRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		http.Error(w, "Invalid request payload", http.StatusBadRequest)
@@ -52,13 +61,13 @@ func CreateDiagnosis(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var patient models.Patient
-	if err := db.DB.Where("id = ?", req.PatientID).First(&patient).Error; err != nil {
+	if err := h.DB.Where("id = ?", req.PatientID).First(&patient).Error; err != nil {
 		http.Error(w, "Patient not found", http.StatusNotFound)
 		return
 	}
 
 	var existingDiagnosis models.Diagnosis
-	if err := db.DB.Where("patient_id = ? AND diagnosis = ?", req.PatientID, req.Diagnosis).First(&existingDiagnosis).Error; err == nil {
+	if err := h.DB.Where("patient_id = ? AND diagnosis = ?", req.PatientID, req.Diagnosis).First(&existingDiagnosis).Error; err == nil {
 		http.Error(w, "Diagnosis already exists for this patient", http.StatusConflict)
 		return
 	}
@@ -77,7 +86,7 @@ func CreateDiagnosis(w http.ResponseWriter, r *http.Request) {
 		StartDate:    parsedDate,
 	}
 
-	if err := db.DB.Create(&diagnose).Error; err != nil {
+	if err := h.DB.Create(&diagnose).Error; err != nil {
 		http.Error(w, "Failed to create diagnosis", http.StatusInternalServerError)
 		return
 	}

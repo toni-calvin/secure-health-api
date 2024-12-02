@@ -18,7 +18,7 @@ func main() {
 
 	db.SeedAdminUser()
 
-	r := api.SetupRoutes()
+	r := api.SetupRoutes(db.DB)
 	log.Println("Server running on port 8080")
 	log.Fatal(http.ListenAndServe(":8080", r))
 

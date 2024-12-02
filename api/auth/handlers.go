@@ -4,12 +4,20 @@ import (
 	"encoding/json"
 	"net/http"
 	"time"
-	"topdoctors/db"
 	"topdoctors/models"
 
 	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
+	"gorm.io/gorm"
 )
+
+type AuthHandler struct {
+	DB *gorm.DB
+}
+
+func NewAuthHandler(db *gorm.DB) *AuthHandler {
+	return &AuthHandler{DB: db}
+}
 
 type LoginRequest struct {
 	Username string `json:"username"`
@@ -20,7 +28,7 @@ type LoginResponse struct {
 	Token string `json:"token"`
 }
 
-func LoginHandler(w http.ResponseWriter, r *http.Request) {
+func (h *AuthHandler) Login(w http.ResponseWriter, r *http.Request) {
 	var req LoginRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		http.Error(w, "Invalid request payload", http.StatusBadRequest)
@@ -29,7 +37,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 
 	// check if user exists in database
 	var user models.User
-	if err := db.DB.Where("username = ?", req.Username).First(&user).Error; err != nil {
+	if err := h.DB.Where("username = ?", req.Username).First(&user).Error; err != nil {
 		http.Error(w, "Invalid username or password", http.StatusUnauthorized)
 		return
 	}

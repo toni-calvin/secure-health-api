@@ -4,9 +4,18 @@ import (
 	"encoding/json"
 	"net/http"
 	"strings"
-	"topdoctors/db"
 	"topdoctors/models"
+
+	"gorm.io/gorm"
 )
+
+type PatientsHandler struct {
+	DB *gorm.DB
+}
+
+func NewPatientsHandler(db *gorm.DB) *PatientsHandler {
+	return &PatientsHandler{DB: db}
+}
 
 type CreatePatientRequest struct {
 	Name    string `json:"name"`
@@ -16,7 +25,7 @@ type CreatePatientRequest struct {
 	Address string `json:"address"`
 }
 
-func CreatePatientHandler(w http.ResponseWriter, r *http.Request) {
+func (h *PatientsHandler) CreatePatientHandler(w http.ResponseWriter, r *http.Request) {
 	var req CreatePatientRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		http.Error(w, "Invalid request payload", http.StatusBadRequest)
@@ -37,7 +46,7 @@ func CreatePatientHandler(w http.ResponseWriter, r *http.Request) {
 		Address: req.Address,
 	}
 
-	if err := db.DB.Create(&patient).Error; err != nil {
+	if err := h.DB.Create(&patient).Error; err != nil {
 		if strings.Contains(err.Error(), "duplicate key value") {
 			http.Error(w, "Patient with the same NIF or Email already exists", http.StatusConflict)
 			return
@@ -50,11 +59,11 @@ func CreatePatientHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(patient)
 }
 
-func ListPatientsHandler(w http.ResponseWriter, r *http.Request) {
+func (h *PatientsHandler) ListPatientsHandler(w http.ResponseWriter, r *http.Request) {
 	nameFilter := r.URL.Query().Get("name")
 
 	var patients []models.Patient
-	query := db.DB
+	query := h.DB
 
 	if nameFilter != "" {
 		query = query.Where("LOWER(name) = ?", strings.ToLower(nameFilter))

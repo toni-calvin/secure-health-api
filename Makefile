@@ -15,10 +15,17 @@ build:
 	@echo "Building Docker images with docker-compose..."
 	docker-compose build
 
-# Run the application using docker-compose
+# Run the app 
 run:
 	@echo "Starting the application using docker-compose..."
-	docker-compose up
+	docker-compose up app db
+
+# Run tests
+tests:
+	@echo "Running tests..."
+	docker-compose up -d test_db
+	docker-compose run --rm app go test -v ./...
+	docker-compose down
 
 # Stop the application without removing volumes
 stop:
