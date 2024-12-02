@@ -8,7 +8,7 @@ DOCKER_IMAGE := $(APP_NAME):$(TAG)
 PORT := 8080
 
 # Default target: build and run
-all: build run
+all: clean build run
 
 # Build the Docker image using docker-compose
 build:
@@ -28,10 +28,6 @@ test:
 	docker-compose run --rm test
 	docker-compose down
 
-stop:
-	@echo "Stopping all containers..."
-	docker-compose stop
-
 clean:
 	@echo "Stopping and removing all containers, networks, and volumes for the project..."
 	docker-compose down --volumes --remove-orphans
@@ -41,11 +37,3 @@ clean:
 	docker volume prune -f
 	docker image prune -f
 	@echo "Cleanup completed successfully."
-
-
-# Full rebuild: clean and run using docker-compose
-rebuild: clean build run
-
-database:
-	@echo "Starting the database using docker-compose..."
-	docker-compose exec db psql -U postgres -d topdoctors

@@ -70,6 +70,7 @@ pip install -r requirements.txt
 ```
 
 ### 3. Run the Scenario Script
+
 ```bash
 python scenarios.py
 ```
@@ -86,10 +87,10 @@ On subsequent runs, you will see errors for duplicate creations (e.g., duplicate
 This behavior is intentional to demonstrate the handling of unique constraints and application logic.
 
 ## Running Test (in another shell)
+Follow these steps to run the tests in the application:
 
-## Additional Notes 
-- To rebuild the applicatin you can run
-```bash
-make rebuild
+```bash 
+make clean && make build && make test
 ```
+
 
