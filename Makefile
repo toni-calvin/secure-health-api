@@ -28,8 +28,6 @@ test:
 	docker-compose run --rm test
 	docker-compose down
 
-
-
 stop:
 	@echo "Stopping all containers..."
 	docker-compose stop
