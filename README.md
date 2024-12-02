@@ -71,7 +71,7 @@ pip install -r requirements.txt
 
 ### 3. Run the Scenario Script
 ```bash
-pip install -r requirements.txt
+python scenarios.py
 ```
 
 ### 3. Expected Behavior
