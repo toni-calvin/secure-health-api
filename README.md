@@ -8,7 +8,7 @@ Welcome to the TopDoctors Challenge! This is a backend application built with Go
 Before you start, ensure you have the following installed:
 
  - 🐳 Docker - to containerize and run the application.
- - 🛠️ Docker Compose - to orchestrate multi-container applications.
+ - 🛠️ Docker Compose - to manage the app and database containers.
  - 🐍 Python 3.x - for running the provided scenario testing script.
  - 📦 pip - for installing Python dependencies.
 
